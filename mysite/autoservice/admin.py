@@ -28,12 +28,6 @@ class ServiceAdmin(admin.ModelAdmin):
     list_display = ("name", "price")
 
 
-# def display_orderline(self):
-#     return ", ".join(orderline.service for orderline in self.orderline.all())
-
-
-# display_orderline.short_description = "Bele"
-
 admin.site.register(VehicleModel)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(Vehicle, VehicleAdmin)
