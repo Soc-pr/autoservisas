@@ -1,8 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Service, Vehicle, VehicleModel, Order
 
 
 def index(request):
-    return HttpResponse("Liau liau liau!!!")
+    num_vehicles = Vehicle.objects.all().count()
+    num_vehicle_models = VehicleModel.objects.all().count()
 
-# Create your views here.
+    context = {
+        'num_vehicles': num_vehicles,
+        'num_vehicle_models': num_vehicle_models,
+    }
+
+    return render(request, 'index.html', context=context)
+

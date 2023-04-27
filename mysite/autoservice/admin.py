@@ -17,6 +17,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 class OrderLineAdmin(admin.ModelAdmin):
     list_display = ("service", "order", "quantity")
+    list_editable = ["quantity"]
 
 
 class VehicleAdmin(admin.ModelAdmin):
@@ -26,6 +27,7 @@ class VehicleAdmin(admin.ModelAdmin):
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ("name", "price")
+    list_editable = ['price']
 
 
 admin.site.register(VehicleModel)
