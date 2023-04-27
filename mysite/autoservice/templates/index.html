@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>liau</title>
-</head>
-<body>
-<h1>Liau. </h1>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block "title" %}Servisiukas{% endblock %}
+
+{% block "content" %}
+
+<h1> Sveiki užsukę į garažiuką!!! </h1>
+<p>Šiuo metu taisome:</p>
+<ul>
+    <li><strong>Automobilių: </strong>{{ num_vehicles }}</li>
+    <li><strong>Automobilių modelių: </strong>{{ num_vehicle_models }}</li>
+
+
+</ul>
+
+
+
+{% endblock %}
