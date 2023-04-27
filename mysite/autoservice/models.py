@@ -28,7 +28,7 @@ class Service(models.Model):
 class Vehicle(models.Model):
     plate = models.CharField('Valst_Numeris', max_length=7)
     vehicle_model = models.ForeignKey(to="VehicleModel", max_length=50, on_delete=models.SET_NULL,
-                                            null=True)
+                                      null=True)
     vin_code = models.CharField('VIN', max_length=15)
     client = models.CharField('Klientas', max_length=25)
 
@@ -42,7 +42,8 @@ class Vehicle(models.Model):
 
 class Order(models.Model):
     date = models.DateField("Data", null=True, blank=True)
-    vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis', max_length=50, on_delete=models.SET_NULL, null=True)
+    vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis', max_length=50, on_delete=models.SET_NULL,
+                                null=True)
 
     def __str__(self):
         return f"{self.vehicle} ({self.date})"
@@ -51,8 +52,10 @@ class Order(models.Model):
         verbose_name = "Užsakymas"
         verbose_name_plural = "Užsakymai"
 
+
 class OrderLine(models.Model):
-    service = models.ForeignKey(to="Service", verbose_name='Paslauga', max_length=50, on_delete=models.SET_NULL, null=True)
+    service = models.ForeignKey(to="Service", verbose_name='Paslauga', max_length=50, on_delete=models.SET_NULL,
+                                null=True)
     order = models.ForeignKey(to="Order", verbose_name='Užsakymas', max_length=50, on_delete=models.SET_NULL, null=True)
     quantity = models.CharField(verbose_name='Kiekis', max_length=2)
 
