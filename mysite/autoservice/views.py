@@ -20,3 +20,10 @@ def index(request):
 
     return render(request, 'index.html', context=context)
 
+def vehicles(request):
+    vehicles = Vehicle.objects.all()
+    context = {
+         'vehicles': vehicles
+    }
+    return render(request, 'vehicles.html', context=context)
+

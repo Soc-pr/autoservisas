@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block "title" %}Automobiliai{% endblock %}
+
+{% block "content" %}
+
+<h1> Automobiliai </h1>
+<p>Šiuo metu taisome:</p>
+
+{% for vehicle in vehicles %}
+<p>{{ vehicle }}</p>
+
+{% endfor %}
+{% endblock %}
