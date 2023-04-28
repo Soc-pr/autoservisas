@@ -9,7 +9,9 @@
 <p>Šiuo metu taisome:</p>
 
 {% for vehicle in vehicles %}
+<a href="{% url 'vehicle' vehicle.id %} ">
 <p>{{ vehicle }}</p>
-
+</a>
+<hr>
 {% endfor %}
 {% endblock %}
