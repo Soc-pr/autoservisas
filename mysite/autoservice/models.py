@@ -15,10 +15,10 @@ class VehicleModel(models.Model):
 
 class Service(models.Model):
     name = models.CharField('Pavadinimas', max_length=200, help_text='Įveskite paslaugos pavadinimą')
-    price = models.CharField('Kaina', max_length=5, help_text='Įveskite paslaugos kainą')
+    price = models.IntegerField('Kaina', help_text='Įveskite paslaugos kainą')
 
     def __str__(self):
-        return f"{self.name} = {self.price}"
+        return f"{self.name}"
 
     class Meta:
         verbose_name = "Paslauga"
@@ -45,6 +45,12 @@ class Order(models.Model):
     vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis',
                                 max_length=50, on_delete=models.SET_NULL,
                                 null=True)
+    def total(self):
+        total_sum = 0
+        for line in self.lines.all():
+            total_sum += line.sum()
+        return total_sum
+
     ORDER_STATUS = (
         ('p', 'Priimta'),
         ('r', 'Remontuojama'),
@@ -68,8 +74,11 @@ class OrderLine(models.Model):
                                 max_length=50, on_delete=models.SET_NULL,
                                 null=True)
     order = models.ForeignKey(to="Order", verbose_name='Užsakymas',
-                              max_length=50, on_delete=models.SET_NULL, null=True)
-    quantity = models.CharField(verbose_name='Kiekis', max_length=2)
+                              max_length=50, on_delete=models.SET_NULL, null=True, related_name='lines')
+    quantity = models.IntegerField(verbose_name='Kiekis')
+
+    def sum(self):
+        return self.service.price * self.quantity
 
     def __str__(self):
         return f"{self.order.vehicle} ({self.order.date}): {self.service} - {self.quantity}"
