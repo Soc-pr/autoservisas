@@ -62,7 +62,7 @@ class Order(models.Model):
                               blank=True, default='p')
 
     def __str__(self):
-        return f"{self.vehicle} ({self.date}) {self.status}"
+        return f"{self.vehicle}"
 
     class Meta:
         verbose_name = "Užsakymas"
