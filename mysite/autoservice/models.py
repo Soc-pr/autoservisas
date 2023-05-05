@@ -44,7 +44,7 @@ class Order(models.Model):
     date = models.DateField("Data", null=True, blank=True)
     vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis',
                                 max_length=50, on_delete=models.SET_NULL,
-                                null=True)
+                                null=True, related_name='auto')
     def total(self):
         total_sum = 0
         for line in self.lines.all():

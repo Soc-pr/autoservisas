@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Service, Vehicle, VehicleModel, Order, OrderLine
 from django.views import generic
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 def index(request):
@@ -22,9 +24,12 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 def vehicles(request):
+    paginator = Paginator(Vehicle.objects.all(), 2)
+    page_number = request.GET.get('page')
+    paged_vehicles = paginator.get_page(page_number)
     vehicles = Vehicle.objects.all()
     context = {
-         'vehicles': vehicles
+         'vehicles': paged_vehicles
     }
     return render(request, 'vehicles.html', context=context)
 
@@ -37,6 +42,7 @@ def vehicle(request, vehicle_id):
 
 class OrderListView(generic.ListView):
     model = Order
+    paginate_by = 3
     template_name = 'orders.html'
     context_object_name = 'orders'
 
@@ -45,3 +51,9 @@ class OrderDetailView(generic.DetailView):
     template_name = "order.html"
     context_object_name = 'order'
 
+def search(request):
+    query = request.GET.get('query')
+    search_results = Vehicle.objects.filter(Q(plate__icontains=query) | Q(vehicle_model__maker__icontains=query) |
+                                            Q(vin_code__icontains=query) | Q(client__icontains=query) |
+                                            Q(vehicle_model__modelis__icontains=query))
+    return render(request, 'search.html', {'vehicles': search_results, 'query': query})
