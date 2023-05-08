@@ -31,6 +31,7 @@ class Vehicle(models.Model):
                                       on_delete=models.SET_NULL, null=True)
     vin_code = models.CharField('VIN', max_length=15)
     client = models.CharField('Klientas', max_length=25)
+    photo = models.ImageField(verbose_name="Nuotrauka", upload_to="vehicles", null=True)
 
     def __str__(self):
         return f"{self.vehicle_model} ({self.plate})"
@@ -44,7 +45,7 @@ class Order(models.Model):
     date = models.DateField("Data", null=True, blank=True)
     vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis',
                                 max_length=50, on_delete=models.SET_NULL,
-                                null=True, related_name='auto')
+                                null=True)
     def total(self):
         total_sum = 0
         for line in self.lines.all():

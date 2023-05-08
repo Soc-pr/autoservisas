@@ -4,8 +4,16 @@
 {% block "title" %}Automobilis{% endblock %}
 
 {% block "content" %}
-
+{% load static %}
+{% if vehicle.photo %}
+<div>
+<img src="{{ vehicle.photo.url }}" class="max-width: 20%" alt="...">
+    {% else %}
+    <img src="{% static 'img/no_media.png' %}" class="max-width: 20%">
+</div>
+{% endif %}
 <h1> Automobilis: </h1>
+
 <ul>
     <li><strong>Auto: </strong>{{ vehicle.vehicle_model }}</li>
     <li><strong>Valst. numeris: </strong>{{ vehicle.plate }}</li>
