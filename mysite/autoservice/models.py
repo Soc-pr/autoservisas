@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class VehicleModel(models.Model):
@@ -31,7 +32,8 @@ class Vehicle(models.Model):
                                       on_delete=models.SET_NULL, null=True)
     vin_code = models.CharField('VIN', max_length=15)
     client = models.CharField('Klientas', max_length=25)
-    photo = models.ImageField(verbose_name="Nuotrauka", upload_to="vehicles", null=True)
+    photo = models.ImageField(verbose_name="Nuotrauka", upload_to="vehicles", null=True, blank=True)
+    owner = models.ForeignKey(to=User, verbose_name="Savininkas", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.vehicle_model} ({self.plate})"
