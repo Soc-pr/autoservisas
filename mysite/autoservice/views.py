@@ -57,3 +57,11 @@ def search(request):
                                             Q(vin_code__icontains=query) | Q(client__icontains=query) |
                                             Q(vehicle_model__modelis__icontains=query))
     return render(request, 'search.html', {'vehicles': search_results, 'query': query})
+
+class MyOrderListView(generic.ListView):
+    model = Order
+    template_name = "my_orders.html"
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        return Order.objects.filter(owner=self.request.user)
