@@ -1,5 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+import datetime
+import pytz
+utc=pytz.UTC
 
 
 class VehicleModel(models.Model):
@@ -33,7 +36,6 @@ class Vehicle(models.Model):
     vin_code = models.CharField('VIN', max_length=15)
     client = models.CharField('Klientas', max_length=25)
     photo = models.ImageField(verbose_name="Nuotrauka", upload_to="vehicles", null=True, blank=True)
-    owner = models.ForeignKey(to=User, verbose_name="Savininkas", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.vehicle_model} ({self.plate})"
@@ -48,6 +50,12 @@ class Order(models.Model):
     vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis',
                                 max_length=50, on_delete=models.SET_NULL,
                                 null=True)
+    deadline = models.DateTimeField(verbose_name="Terminas", null=True, blank=True)
+    owner = models.ForeignKey(to=User, verbose_name="Savininkas", on_delete=models.SET_NULL, null=True, blank=True)
+
+    def deadline_over(self):
+        return self.deadline and datetime.datetime.today().replace(tzinfo=utc) > self.deadline.replace(tzinfo=utc)
+
     def total(self):
         total_sum = 0
         for line in self.lines.all():
