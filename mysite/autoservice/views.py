@@ -9,14 +9,16 @@ def index(request):
     num_vehicles = Vehicle.objects.all().count()
     num_vehicle_models = VehicleModel.objects.all().count()
     num_services = Service.objects.all().count()
-    num_completed_orders = Order.objects.filter(status__exact='d').count(),
-
+    num_completed_orders = Order.objects.filter(status__exact='d').count()
+    num_visits = request.session.get('num_visits', 1)
+    request.session['num_visits'] = num_visits + 1
 
     context = {
         'num_vehicles': num_vehicles,
         'num_vehicle_models': num_vehicle_models,
         'num_services': num_services,
-        'num_completed_orders': num_completed_orders
+        'num_completed_orders': num_completed_orders,
+        'num_visits': num_visits,
 
     }
 
