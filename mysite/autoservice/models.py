@@ -50,7 +50,7 @@ class Vehicle(models.Model):
 
 
 class Order(models.Model):
-    date = models.DateField("Data", null=True, blank=True)
+    date = models.DateField(verbose_name="Data", auto_now_add=True)
     vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis',
                                 max_length=50, on_delete=models.SET_NULL,
                                 null=True)
@@ -77,7 +77,7 @@ class Order(models.Model):
                               blank=True, default='p')
 
     def __str__(self):
-        return f"{self.vehicle}"
+        return f"{self.vehicle} ({self.date})"
 
     class Meta:
         verbose_name = "Užsakymas"
