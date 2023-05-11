@@ -42,7 +42,11 @@
         <td><strong>{{ order.total }}</strong></td>
     </tr>
 </table>
-
+{% if order.owner == user %}
+<div>
+<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'newline' order.id %}">+Paslaugos</a>
+</div>
+{% endif %}
 </br>
 <h5>Atsiliepimai:</h5>
 {% if user.is_authenticated %}

@@ -10,7 +10,7 @@ from .forms import OrderCommentForm, UserUpdateForm, ProfileUpdateForm, OrderCre
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from .models import Service, Vehicle, VehicleModel, Order
+from .models import Service, Vehicle, VehicleModel, Order, OrderLine
 
 
 def index(request):
@@ -190,4 +190,21 @@ class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteVie
     def test_func(self):
         return self.get_object().owner == self.request.user
 
+
+class OrderLineCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = OrderLine
+    fields = ['service', 'quantity']
+    template_name = 'orderline_form.html'
+    # success_url = '/autoservice/orders/'
+
+    def test_func(self):
+        order = Order.objects.get(pk=self.kwargs['pk'])
+        return order.owner == self.request.user
+
+    def get_success_url(self):
+        return reverse('order', kwargs={'pk': self.kwargs['pk']})
+
+    def form_valid(self, form):
+        form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
+        return super().form_valid(form)
 
