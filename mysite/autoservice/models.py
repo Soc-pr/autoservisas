@@ -82,6 +82,7 @@ class Order(models.Model):
     class Meta:
         verbose_name = "Užsakymas"
         verbose_name_plural = "Užsakymai"
+        ordering = ['-id']
 
 
 class OrderLine(models.Model):

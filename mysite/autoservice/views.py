@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormMixin
 from .forms import OrderCommentForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Service, Vehicle, VehicleModel, Order
 
@@ -48,38 +49,6 @@ def vehicle(request, vehicle_id):
         'vehicle': vehicle,
     }
     return render(request, 'vehicle.html', context=context)
-
-
-class OrderListView(generic.ListView):
-    model = Order
-    paginate_by = 3
-    template_name = 'orders.html'
-    context_object_name = 'orders'
-
-
-class OrderDetailView(FormMixin, generic.DetailView):
-    model = Order
-    template_name = "order.html"
-    context_object_name = 'order'
-    form_class = OrderCommentForm
-
-    def get_success_url(self):
-        return reverse('order', kwargs={'pk': self.object.id})
-
-        # standartinis post metodo perrašymas, naudojant FormMixin, galite kopijuoti tiesiai į savo projektą.
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        form.instance.order = self.object
-        form.instance.user = self.request.user
-        form.save()
-        return super().form_valid(form)
 
 
 def search(request):
@@ -128,6 +97,7 @@ def register(request):
             return redirect('register')
     return render(request, 'registration/register.html')
 
+
 @login_required
 def profile(request):
     if request.method == "POST":
@@ -147,3 +117,47 @@ def profile(request):
         'p_form': p_form,
     }
     return render(request, 'profile.html', context)
+
+
+class OrderListView(generic.ListView):
+    model = Order
+    paginate_by = 3
+    template_name = 'orders.html'
+    context_object_name = 'orders'
+
+
+class OrderDetailView(FormMixin, generic.DetailView):
+    model = Order
+    template_name = "order.html"
+    context_object_name = 'order'
+    form_class = OrderCommentForm
+
+    def get_success_url(self):
+        return reverse('order', kwargs={'pk': self.object.id})
+
+        # standartinis post metodo perrašymas, naudojant FormMixin, galite kopijuoti tiesiai į savo projektą.
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.order = self.object
+        form.instance.user = self.request.user
+        form.save()
+        return super().form_valid(form)
+
+
+class OrderCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Order
+    fields = ['vehicle', 'deadline', 'status']
+    success_url = '/autoservice/orders/'
+    template_name = 'order_form.html'
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
