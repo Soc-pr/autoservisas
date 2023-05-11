@@ -10,7 +10,8 @@
 
 {% for order in orders %}
 <p><a href="{% url 'order' order.pk %} ">{{ order.vehicle }}</a> <span class="{% if order.deadline_over %}text-danger{% endif %}">({{ order.deadline }})</span> </p>
-
+<p>{{ order.owner.username }}</p>
+<img class="rounded-circle" src="{{order.owner.profile.photo.url}}">
 <hr>
 {% endfor %}
 
