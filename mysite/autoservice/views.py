@@ -7,6 +7,7 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormMixin
 from .forms import OrderCommentForm
+from django.contrib.auth.decorators import login_required
 
 from .models import Service, Vehicle, VehicleModel, Order
 
@@ -126,3 +127,7 @@ def register(request):
             messages.error(request, 'Slaptažodžiai nesutampa!')
             return redirect('register')
     return render(request, 'registration/register.html')
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')

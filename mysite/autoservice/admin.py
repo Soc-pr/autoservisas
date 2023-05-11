@@ -5,7 +5,8 @@ from .models import (VehicleModel,
                      Vehicle,
                      Order,
                      OrderLine,
-                     OrderComment)
+                     OrderComment,
+                     Profile)
 
 
 # Register your models here.
@@ -49,3 +50,4 @@ admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderLine, OrderLineAdmin)
 admin.site.register(OrderComment)
+admin.site.register(Profile)
