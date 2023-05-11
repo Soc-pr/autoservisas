@@ -9,9 +9,9 @@
 <p>Vykdomi užsakymai:</p>
 
 {% for order in orders %}
-<a href="{% url 'order' order.pk %} ">
-<p>{{ order }}</p>
-</a>
+
+<p><a href="{% url 'order' order.pk %} ">{{ order.vehicle }}</a> <span class="{% if order.deadline_over %}text-danger{% endif %}">({{ order.deadline }})</span> </p>
+
 <hr>
 {% endfor %}
 
