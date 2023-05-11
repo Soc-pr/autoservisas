@@ -6,7 +6,7 @@
 {% block "content" %}
 
 <div class="content-section">
-    <form method="POST">
+    <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Naujas užsakymas/koregavimas</legend>

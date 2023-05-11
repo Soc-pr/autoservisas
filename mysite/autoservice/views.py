@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormMixin
-from .forms import OrderCommentForm, UserUpdateForm, ProfileUpdateForm
+from .forms import OrderCommentForm, UserUpdateForm, ProfileUpdateForm, OrderCreateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -153,9 +153,10 @@ class OrderDetailView(FormMixin, generic.DetailView):
 
 class OrderCreateView(LoginRequiredMixin, generic.CreateView):
     model = Order
-    fields = ['vehicle', 'deadline', 'status']
+    # fields = ['vehicle', 'deadline', 'status']
     success_url = '/autoservice/orders/'
     template_name = 'order_form.html'
+    form_class = OrderCreateForm
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -164,9 +165,10 @@ class OrderCreateView(LoginRequiredMixin, generic.CreateView):
 
 class OrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Order
-    fields = ['vehicle', 'deadline', 'status']
+    # fields = ['vehicle', 'deadline', 'status']
     # success_url = '/autoservice/orders/'
     template_name = 'order_form.html'
+    form_class = OrderCreateForm
 
     def get_success_url(self):
         return reverse('order', kwargs={'pk': self.object.id})

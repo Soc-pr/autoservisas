@@ -50,7 +50,7 @@ class Vehicle(models.Model):
 
 
 class Order(models.Model):
-    date = models.DateField(verbose_name="Data", auto_now_add=True)
+    date = models.DateField(verbose_name="Data", auto_now_add=True, null=True, blank=True)
     vehicle = models.ForeignKey(to="Vehicle", verbose_name='Automobilis',
                                 max_length=50, on_delete=models.SET_NULL,
                                 null=True)

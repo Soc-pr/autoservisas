@@ -3,7 +3,7 @@
 
 {% block "content" %}
     <div class="content-section">
-    <form method="POST">
+    <form method="POST" action="" enctype="multipart/form-data">
         {% load crispy_forms_tags %}
         {% csrf_token %}
         <fieldset class="form-group">
