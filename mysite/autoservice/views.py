@@ -178,3 +178,14 @@ class OrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateVie
     def test_func(self):
         return self.get_object().owner == self.request.user
 
+
+class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Order
+    context_object_name = 'order'
+    template_name = 'order_delete.html'
+    success_url = '/autoservice/orders/'
+
+    def test_func(self):
+        return self.get_object().owner == self.request.user
+
+
