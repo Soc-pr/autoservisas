@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormMixin
 from .forms import OrderCommentForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Service, Vehicle, VehicleModel, Order
 
@@ -160,4 +160,21 @@ class OrderCreateView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
+
+
+class OrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Order
+    fields = ['vehicle', 'deadline', 'status']
+    # success_url = '/autoservice/orders/'
+    template_name = 'order_form.html'
+
+    def get_success_url(self):
+        return reverse('order', kwargs={'pk': self.object.id})
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.get_object().owner == self.request.user
 

@@ -11,6 +11,12 @@
 <p><strong>Automobilis: </strong>{{ order.vehicle }}</p>
 <p><strong>Statusas: </strong>{{ order.get_status_display }}</p>
 <p><strong>Klientas: </strong>{{ order.owner }}</p>
+{% if order.owner == user %}
+<div>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'order_update' order.id %}">Redaguoti</a>
+</div>
+
+{% endif %}
 <hr>
 <table class="table table-striped">
     <tr>
