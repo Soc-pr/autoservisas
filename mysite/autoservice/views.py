@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormMixin
-from .forms import OrderCommentForm
+from .forms import OrderCommentForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
 from .models import Service, Vehicle, VehicleModel, Order
@@ -130,4 +130,20 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    if request.method == "POST":
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f"Profilis atnaujintas")
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form,
+    }
+    return render(request, 'profile.html', context)
